@@ -1,0 +1,5 @@
+nota,fornecedor,valor_nota,valor_pago
+NF001,Fornecedor A,1000.00,1000.00
+NF002,Fornecedor B,1500.00,900.00
+NF003,Fornecedor C,800.00,0.00
+NF004,Fornecedor D,500.00,650.00
