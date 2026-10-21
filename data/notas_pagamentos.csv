@@ -1,5 +1,6 @@
-nota,fornecedor,valor_nota,valor_pago
-NF001,Fornecedor A,1000.00,1000.00
-NF002,Fornecedor B,1500.00,900.00
-NF003,Fornecedor C,800.00,0.00
-NF004,Fornecedor D,500.00,650.00
+
+nota,fornecedor,valor_nota,valor_pago,email_pagador
+NF001,Fornecedor A,1000.00,1000.00,pagador1@example.com
+NF002,Fornecedor B,1500.00,900.00,pagador2@example.com
+NF003,Fornecedor C,800.00,0.00,pagador3@example.com
+NF004,Fornecedor D,500.00,650.00,pagador4@example.com
