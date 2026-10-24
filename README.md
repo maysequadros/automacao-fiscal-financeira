@@ -1,71 +1,90 @@
 # Automação Fiscal e Financeira
 
-Projeto de estudo e desenvolvimento de uma automação para conferência de dados fiscais e financeiros, utilizando Python, n8n e inteligência artificial.
+Projeto de automação desenvolvido com Python, n8n e inteligência artificial para apoiar a conciliação de notas fiscais e pagamentos, identificar divergências e gerar alertas por e-mail.
 
 ## Objetivo
 
-Desenvolver um fluxo automatizado capaz de coletar dados fictícios de notas fiscais e pagamentos, organizar as informações, identificar possíveis divergências e gerar alertas para conferência humana.
+Demonstrar como ferramentas de programação e automação podem reduzir tarefas manuais de conferência financeira, facilitando a identificação de pagamentos integrais, parciais, não realizados e excedentes.
 
-O projeto busca demonstrar como ferramentas de automação podem auxiliar na redução de tarefas manuais e na organização de processos fiscais e financeiros.
+## Funcionalidades
 
-## Funcionalidades planejadas
+- Leitura de dados de notas fiscais e pagamentos em arquivo CSV.
+- Conciliação de valores com Python e pandas.
+- Classificação dos pagamentos conforme os valores da nota e do pagamento.
+- Identificação de saldos pendentes e pagamentos excedentes.
+- Integração de um workflow no n8n com webhook e requisição HTTP.
+- Uso de IA para gerar uma análise textual dos dados.
+- Envio de alerta por e-mail para pagamentos excedentes.
+- Retorno de uma resposta ao sistema que aciona o webhook.
 
-- Extração de dados de uma página HTML utilizando Python e BeautifulSoup.
-- Envio dos dados para um workflow do n8n por meio de um Webhook.
-- Consulta a um arquivo CSV com informações complementares.
-- Cruzamento de dados de notas fiscais e pagamentos.
-- Identificação de pagamentos pendentes e divergências de valores.
-- Utilização de inteligência artificial para gerar explicações sobre as ocorrências.
-- Geração de mensagens e respostas automatizadas.
+## Tecnologias utilizadas
 
-## Tecnologias
+- Python
+- pandas
+- n8n
+- Ollama com modelo local de IA
+- Gmail API
+- GitHub
 
-- **Python:** coleta e extração de dados.
-- **BeautifulSoup:** leitura de informações em páginas HTML.
-- **n8n:** integração e automação do fluxo de trabalho.
-- **JavaScript:** tratamento e organização de dados nos nós Code.
-- **OpenAI:** apoio na geração de explicações em linguagem natural.
-- **GitHub:** versionamento do código e documentação do projeto.
-- **Google Colab:** execução e testes do notebook Python.
-
-## Fluxo de funcionamento planejado
-
-1. Coletar registros fiscais fictícios de uma página HTML.
-2. Enviar os registros ao n8n por meio de um Webhook.
-3. Consultar dados complementares em um arquivo CSV.
-4. Combinar e organizar as informações.
-5. Comparar os valores registrados e identificar possíveis divergências.
-6. Gerar uma explicação e encaminhar um alerta para conferência.
-7. Retornar o resultado da execução.
-
-## Estrutura planejada
+## Estrutura do projeto
 
 ```text
 automacao-fiscal-financeira/
-├── README.md
-├── .gitignore
-├── docs/
-│   └── index.html
 ├── data/
 │   └── notas_pagamentos.csv
 ├── src/
-│   └── extrair_dados.ipynb
-└── n8n/
-    └── workflow.json
+│   └── conciliar_pagamentos.py
+├── n8n/
+│   └── workflow.json
+├── README.md
+└── .gitignore
 ```
 
-A estrutura será criada e atualizada conforme o desenvolvimento avançar.
+> A pasta `n8n/` e o arquivo `workflow.json` devem ser adicionados ao repositório após exportar o workflow do n8n.
 
-## Status do projeto
+## Exemplo de conciliação
 
-Em desenvolvimento.
+| Nota fiscal | Valor da nota | Valor pago | Resultado |
+|---|---:|---:|---|
+| NF001 | R$ 1.000,00 | R$ 1.000,00 | Pago integralmente |
+| NF002 | R$ 1.500,00 | R$ 900,00 | Pagamento parcial |
+| NF003 | R$ 800,00 | R$ 0,00 | Sem pagamento |
+| NF004 | R$ 500,00 | R$ 650,00 | Pagamento excedente de R$ 150,00 |
 
-As funcionalidades serão implementadas e testadas por etapas. A documentação será atualizada conforme cada parte do fluxo for concluída.
+Os dados apresentados são fictícios e utilizados apenas para demonstração.
 
-## Dados e limitações
+## Como executar o script Python
 
-O projeto utilizará dados fictícios para fins educacionais. Os alertas gerados servem como apoio à conferência e não substituem a validação dos documentos, dos registros contábeis ou das obrigações fiscais por um profissional responsável.
+1. Instale o Python e a biblioteca pandas.
+2. Clone o repositório e abra a pasta do projeto.
+3. Instale a dependência:
 
-## Referência educacional
+```bash
+pip install pandas
+```
 
-Projeto autoral inspirado em conceitos e práticas de automação estudados em desafios educacionais da DIO, com proposta e aplicação adaptadas para o contexto fiscal e financeiro.
+4. Execute o script a partir da pasta raiz:
+
+```bash
+python src/conciliar_pagamentos.py
+```
+
+## Workflow no n8n
+
+O workflow recebe uma requisição pelo webhook, busca os dados do CSV, processa as informações, utiliza IA para produzir uma análise e verifica se há pagamento excedente. Quando o excedente é identificado, o fluxo encaminha um alerta por e-mail.
+
+Para executar o workflow, é necessário configurar o n8n, o acesso ao modelo local do Ollama e as credenciais autorizadas do Gmail.
+
+## Aprendizados
+
+Este projeto reúne conhecimentos de análise de dados com Python, tratamento de arquivos CSV, lógica condicional, integração entre ferramentas, uso de modelos locais de IA, APIs e automação de notificações.
+
+## Segurança
+
+- Não utilize dados financeiros reais ou informações pessoais no repositório público.
+- Não publique senhas, tokens, credenciais OAuth ou chaves de API.
+- Configure as credenciais diretamente no ambiente do n8n.
+
+## Autora
+
+Projeto autoral desenvolvido para estudo e portfólio na área de automação fiscal e financeira.
