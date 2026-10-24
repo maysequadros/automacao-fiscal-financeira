@@ -6,12 +6,17 @@ Comparar os valores das notas fiscais com os valores pagos, identificando pagame
 
 ## Entrada de dados
 
+## Entrada de dados
+
 O arquivo `data/notas_pagamentos.csv` contém os seguintes campos:
 
 - `nota`: identificador da nota fiscal.
 - `fornecedor`: nome do fornecedor.
 - `valor_nota`: valor total da nota fiscal.
 - `valor_pago`: valor pago.
+- `email_pagador`: endereço de e-mail do responsável pelo pagamento, utilizado no envio de alertas.
+
+Os dados utilizados neste projeto são fictícios e destinados a testes.
 
 ## Regras de classificação
 
