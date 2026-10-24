@@ -6,8 +6,6 @@ Comparar os valores das notas fiscais com os valores pagos, identificando pagame
 
 ## Entrada de dados
 
-## Entrada de dados
-
 O arquivo `data/notas_pagamentos.csv` contém os seguintes campos:
 
 - `nota`: identificador da nota fiscal.
@@ -46,8 +44,21 @@ O script `src/conciliar_pagamentos.py` foi executado no PyCharm com quatro regis
 
 **Resultado:** teste executado com sucesso, sem erros.
 
+
+
+## Status do projeto
+
+- [x] Desenvolver o script Python de conciliação.
+- [x] Testar os quatro cenários de pagamento.
+- [x] Integrar o processamento ao workflow do n8n.
+- [x] Configurar a análise auxiliar com o modelo local Ollama.
+- [x] Testar o envio de alerta por e-mail para pagamento excedente.
+- [x] Configurar a resposta do Webhook.
+
 ## Próximas melhorias
 
-- Preparar o alerta por e-mail para pagamentos excedentes.
+- [ ] Aprimorar o tratamento de erros e dados inválidos.
+- [ ] Criar testes automatizados para a conciliação.
+- [ ] Melhorar os registros de execução e monitoramento.
 - Integrar a conciliação ao fluxo de automação no n8n.
 - Documentar e testar o fluxo completo.
