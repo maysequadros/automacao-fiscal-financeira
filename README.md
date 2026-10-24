@@ -1,3 +1,5 @@
+# Automação Fiscal e Financeira
+
 ## 🔄 Como funciona o workflow
 
 1. **Recebimento:** o workflow é iniciado por um Webhook do n8n.
@@ -40,17 +42,18 @@ Demonstrar como ferramentas de programação e automação podem reduzir tarefas
 
 ## Estrutura do projeto
 
-```text
 automacao-fiscal-financeira/
 ├── data/
 │   └── notas_pagamentos.csv
-├── src/
-│   └── conciliar_pagamentos.py
+├── docs/
+│   └── conciliacao.md
 ├── n8n/
 │   └── workflow.json
-├── README.md
-└── .gitignore
-```
+├── src/
+│   └── conciliar_pagamentos.py
+├── .gitignore
+└── README.md
+
 
 > A pasta `n8n/` e o arquivo `workflow.json` devem ser adicionados ao repositório após exportar o workflow do n8n.
 
@@ -67,19 +70,18 @@ Os dados apresentados são fictícios e utilizados apenas para demonstração.
 
 ## Como executar o script Python
 
-1. Instale o Python e a biblioteca pandas.
-2. Clone o repositório e abra a pasta do projeto.
-3. Instale a dependência:
+**Pré-requisitos:** Python instalado e acesso ao terminal.
 
-```bash
-pip install pandas
-```
+1. Clone o repositório e abra a pasta do projeto.
+2. Instale a dependência:
 
-4. Execute o script a partir da pasta raiz:
+   `pip install pandas`
 
-```bash
-python src/conciliar_pagamentos.py
-```
+3. Execute o script a partir da pasta raiz:
+
+   `python src/conciliar_pagamentos.py`
+
+O script lê o arquivo CSV de entrada, classifica os pagamentos e calcula os saldos pendentes e os valores excedentes.
 
 ## Workflow no n8n
 
