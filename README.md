@@ -1,4 +1,12 @@
+
 # Automação Fiscal e Financeira
+
+Projeto de automação desenvolvido com Python, n8n e inteligência artificial para apoiar a conciliação de notas fiscais e pagamentos, identificar divergências e gerar alertas por e-mail.
+
+## Objetivo
+
+Demonstrar como ferramentas de programação e automação podem reduzir tarefas manuais de conferência financeira, facilitando a identificação de pagamentos integrais, parciais, não realizados e excedentes.
+
 
 ## 🔄 Como funciona o workflow
 
@@ -42,6 +50,7 @@ Demonstrar como ferramentas de programação e automação podem reduzir tarefas
 
 ## Estrutura do projeto
 
+```text
 automacao-fiscal-financeira/
 ├── data/
 │   └── notas_pagamentos.csv
@@ -53,9 +62,8 @@ automacao-fiscal-financeira/
 │   └── conciliar_pagamentos.py
 ├── .gitignore
 └── README.md
+```
 
-
-> A pasta `n8n/` e o arquivo `workflow.json` devem ser adicionados ao repositório após exportar o workflow do n8n.
 
 ## Exemplo de conciliação
 
