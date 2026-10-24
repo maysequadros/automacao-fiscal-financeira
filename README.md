@@ -42,7 +42,8 @@ Demonstrar como ferramentas de programação e automação podem reduzir tarefas
 - GitHub
 
 ## Estrutura do projeto
-text
+
+```text
 automacao-fiscal-financeira/
 ├── data/
 │   └── notas_pagamentos.csv
@@ -54,6 +55,7 @@ automacao-fiscal-financeira/
 │   └── conciliar_pagamentos.py
 ├── .gitignore
 └── README.md
+```
 
 ## Exemplo de conciliação
 
