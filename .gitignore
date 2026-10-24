@@ -190,6 +190,19 @@ cython_debug/
 #   option (not recommended) you can uncomment the following to ignore the entire idea folder.
 # .idea/
 
+
+# Credenciais e arquivos locais
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+token.json
+
+# Dados locais do n8n
+.n8n/
+
+
 # Abstra
 #   Abstra is an AI-powered process automation framework.
 #   Ignore directories containing user credentials, local state, and settings.
