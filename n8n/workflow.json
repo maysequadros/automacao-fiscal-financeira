@@ -1,0 +1,353 @@
+{
+  "name": "automação-fiscal-financeira",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "conferencia-fiscal",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -608,
+        -160
+      ],
+      "id": "864a35f5-fafa-4536-b9c3-616923fd0950",
+      "name": "Webhook",
+      "webhookId": "d5b83270-41bb-416d-90e2-0709a8f40eab"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"sucesso\": true,\n  \"mensagem\": \"Processamento fiscal e financeiro concluído.\",\n  \"email\": \"Alerta de pagamento excedente processado.\"\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1760,
+        -160
+      ],
+      "id": "ba5df5f5-7c0f-4aee-b47c-223244e9ae28",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "url": "https://raw.githubusercontent.com/maysequadros/automacao-fiscal-financeira/refs/heads/main/data/notas_pagamentos.csv",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        -384,
+        -80
+      ],
+      "id": "ca4f26a3-0b35-400d-8e4f-97a65a468816",
+      "name": "HTTP Request",
+      "retryOnFail": false,
+      "executeOnce": false,
+      "alwaysOutputData": false,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "jsCode": "const notas = [\n  {\n    nota: \"NF001\",\n    fornecedor: \"Fornecedor A\",\n    valor_nota: 1000,\n    valor_pago: 1000,\n    email_pagador: \"pagador1@example.com\"\n  },\n  {\n    nota: \"NF004\",\n    fornecedor: \"Fornecedor D\",\n    valor_nota: 500,\n    valor_pago: 650,\n    email_pagador: \"pagador4@example.com\"\n  }\n];\n\nreturn notas.map(nota => ({\n  json: {\n    ...nota,\n    excedente: Math.max(nota.valor_pago - nota.valor_nota, 0),\n    status: nota.valor_pago > nota.valor_nota\n      ? \"PAGAMENTO_EXCEDENTE\"\n      : nota.valor_pago === nota.valor_nota\n        ? \"PAGO_INTEGRALMENTE\"\n        : \"OUTRO_STATUS\"\n  }\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -160,
+        -80
+      ],
+      "id": "338875de-4c4b-4e85-b645-fcebddcd23b9",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {
+          "includeUnpaired": true
+        }
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        80,
+        -256
+      ],
+      "id": "bc093c62-ef1e-43bc-a528-3da146bde3d8",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "jsCode": "\nreturn $input.all().map(item => {\n  const nota = item.json;\n\n  const valorNota = Number(nota.valor_nota ?? 0);\n  const valorPago = Number(nota.valor_pago ?? 0);\n\n  let status;\n\n  if (valorPago === 0) {\n    status = \"SEM_PAGAMENTO\";\n  } else if (valorPago < valorNota) {\n    status = \"PAGAMENTO_PARCIAL\";\n  } else if (valorPago === valorNota) {\n    status = \"PAGO_INTEGRALMENTE\";\n  } else {\n    status = \"PAGAMENTO_EXCEDENTE\";\n  }\n\n  return {\n    json: {\n      ...nota,\n      status,\n      saldo_pendente: Math.max(valorNota - valorPago, 0),\n      excedente: Math.max(valorPago - valorNota, 0)\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        288,
+        -160
+      ],
+      "id": "3f786a9c-f201-4842-a704-4d04cc231df8",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.myNewField = 1;\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        512,
+        -160
+      ],
+      "id": "9c5e8f5d-4928-41cf-8de7-2d6116ce4789",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all().map((item, index) => {\n  const dadosOriginais = $('Code in JavaScript2').all()[index].json;\n  const respostaIA = item.json;\n\n  return {\n    json: {\n      ...dadosOriginais,\n      resultado_analise_ia:\n        respostaIA.content ??\n        respostaIA.text ??\n        respostaIA.output ??\n        \"\"\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1088,
+        -160
+      ],
+      "id": "3dba9507-1eb3-47fd-a22a-b86bf0ec9055",
+      "name": "Code in JavaScript3"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email_pagador }}",
+        "subject": "=Alerta de pagamento excedente - {{ $json.nota }}",
+        "message": "=A nota fiscal {{ $json.nota }}, do fornecedor {{ $json.fornecedor }}, possui pagamento excedente de R$ {{ $json.excedente }}. Valor da nota: R$ {{ $json.valor_nota }}. Valor pago: R$ {{ $json.valor_pago }}. Favor verificar e providenciar a regularização.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1536,
+        -160
+      ],
+      "id": "53899351-3c66-4263-a284-16a33c0a6246",
+      "name": "Send a message",
+      "webhookId": "5ff0f86a-51c9-496b-8b88-0e14b92fb96b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "IsSVPKJXKyni4McC",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "f416759f-cf43-441a-8547-59dadb00900b",
+              "leftValue": "={{ Number($json.excedente) }}",
+              "rightValue": null,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1312,
+        -160
+      ],
+      "id": "56242b2f-92e7-4aa1-a6ae-a339c7a02fc1",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "qwen2.5:3b",
+          "mode": "list",
+          "cachedResultName": "qwen2.5:3b"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Responda sempre em português do Brasil. Você é um assistente de análise fiscal e financeira.\n\nAnalise os dados de pagamento recebidos abaixo:\n{{ JSON.stringify($json) }}\n\nIdentifique se o pagamento foi integral, parcial, não realizado ou excedente. Informe o número da nota fiscal, o valor da nota, o valor pago e, se houver, o saldo pendente ou o excedente.\n\nNão invente informações. Se os dados não estiverem disponíveis, informe isso claramente."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.ollama",
+      "typeVersion": 1,
+      "position": [
+        704,
+        -176
+      ],
+      "id": "c367969e-67de-4b80-8481-f47d0844b1b6",
+      "name": "Message a model1",
+      "credentials": {
+        "ollamaApi": {
+          "id": "PFKMqg7zM8L3gCoa",
+          "name": "Ollama account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        []
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "Message a model1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript3": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "9a090e87-e0d5-4d9f-85a9-14b2195d4b07",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "68904b41e3c0b73d7cc9ace144ddee761a72f665ebe61b0768d9a96e6c21f9cd"
+  },
+  "nodeGroups": [],
+  "id": "DIeQuBvahgNs5b59",
+  "tags": []
+}
