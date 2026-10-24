@@ -1,3 +1,15 @@
+## 🔄 Como funciona o workflow
+
+1. **Recebimento:** o workflow é iniciado por um Webhook do n8n.
+2. **Leitura dos dados:** os dados das notas fiscais e dos pagamentos são obtidos para análise.
+3. **Conciliação:** os registros são organizados para identificar pagamentos integrais, parciais, ausentes ou excedentes.
+4. **Análise com IA:** o modelo local Ollama auxilia na análise das informações.
+5. **Verificação:** o workflow identifica pagamentos excedentes.
+6. **Notificação:** quando necessário, o Gmail envia um alerta ao responsável pelo pagamento.
+7. **Resposta:** o Webhook retorna uma confirmação do processamento.
+
+**Observação:** o projeto utiliza dados fictícios e tem finalidade demonstrativa. As credenciais do Gmail e do Ollama devem ser configuradas individualmente no n8n.
+
 # Automação Fiscal e Financeira
 
 Projeto de automação desenvolvido com Python, n8n e inteligência artificial para apoiar a conciliação de notas fiscais e pagamentos, identificar divergências e gerar alertas por e-mail.
@@ -88,3 +100,4 @@ Este projeto reúne conhecimentos de análise de dados com Python, tratamento de
 ## Autora
 
 Projeto autoral desenvolvido para estudo e portfólio na área de automação fiscal e financeira.
+
